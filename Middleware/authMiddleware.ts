@@ -13,7 +13,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
 
         if (!storedPassword) {
             return res.status(401).json({ 
-                status: 'Documento o contraseña incorrecta'
+                status: 'email o contraseña incorrecta'
             });
         }
 
@@ -25,7 +25,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
             next(); 
         } else {
             return res.status(401).json({ 
-                status: 'Documento o contraseña incorrecta'
+                status: 'email o contraseña incorrecta'
             });
         }
     } catch (error) {
