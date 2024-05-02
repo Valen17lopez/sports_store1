@@ -1,7 +1,11 @@
 import db from '../config/config-db';
+import products from '../Dto/products';
 import User from '../Dto/UserDto';
 
 class UserRepository {
+    static login(arg0: any): any {
+        throw new Error("Method not implemented.");
+    }
 
     static async add(user: User){
         const sql = 'INSERT INTO users (email, name, lastName, password, role, phoneNumber, address) VALUES (?,?,?,?,?,?,?)';
@@ -37,6 +41,32 @@ class UserRepository {
         }
     }
    
+
+    static async getAllproducts(): Promise<products[]> {
+        try {
+        const sql = 'SELECT * FROM product ';
+        const [rows] = await db.execute(sql);
+    
+        if (!Array.isArray(rows)) {
+            throw new Error('Los datos de los product no son válidos');
+        }
+    
+        const products: products[] = rows.map((row: any) => {
+            return {
+                id: row.number,
+                nombre_prod: row.string,
+                precio: row.string,
+                descripcion: row.string
+            };
+        });
+        return products;
+        } catch (error) {
+            console.error('Error al obtener todas los productos:', error);
+            throw error;
+        }
+    }
+
 }
+
 
 export default UserRepository;

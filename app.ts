@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 
 import register from './routes/register';
 import auth from './routes/auth';
+import products from './routes/products'
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -11,6 +12,7 @@ const app = express().use(bodyParser.json());
 
 app.use('/register', register);
 app.use('/auth', auth);
+app.use('/products', products);
 
 const PORT = process.env.PORT || 10101;
 
