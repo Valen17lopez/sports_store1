@@ -1,4 +1,4 @@
-// inventarioController.ts
+
 import { Request, Response } from 'express';
 import UserRepository from '../repositories/UserRepository';
 

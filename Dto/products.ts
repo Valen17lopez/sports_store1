@@ -1,9 +1,7 @@
 interface products {
-    id: number;
     nombre_prod: string;
     precio: string;
     descripcion: string;
-    
 }
 
 export default products;

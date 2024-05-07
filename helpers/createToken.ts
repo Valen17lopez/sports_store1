@@ -1,15 +1,11 @@
-import jwt from "jsonwebtoken";
+const jwt = require('jsonwebtoken');
 
-
-
-function createToken(email: string){
+export async function generateToken(email: string){
     try {
-        const token = jwt.sign({ email: email }, "evdaulren", { expiresIn: '30s'});
+        const token = jwt.sign({ email: email }, process.env.SECRET_KEY, { expiresIn: '1h'});
         return token;
     } catch (error) {
         console.error('Error al generar el token:', error);
         throw new Error('Error al generar el token');
     }
 }
-
-export default createToken;
