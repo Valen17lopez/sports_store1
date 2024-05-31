@@ -9,3 +9,11 @@ router.post('/', validatorParams, validator, registerController, productsControl
 
 
 export default router;
+
+
+// email,
+//       password,
+//       name,
+//       lastName,
+//       phoneNumber,
+//       domicilio
