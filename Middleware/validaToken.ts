@@ -1,36 +1,35 @@
-import e, { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+import { Request, Response, NextFunction } from 'express';
+import jwt, { TokenExpiredError, JsonWebTokenError } from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
 const validateToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const headerToken = req.headers['authorization'];
+        const headerToken = req.headers['authorization'];//se obtiene el token de la authorization
 
-    if (headerToken != undefined && headerToken.startsWith('Bearer ')) {
-        const bearerToken = headerToken.slice(7);
-
-        await jwt.verify(bearerToken, process.env.SECRET_KEY || 'evdaulren', (err, decoden) => {
-            if (err) {
-                if(err instanceof jwt.TokenExpiredError || err instanceof jwt.TokenExpiredError){
-                    return res.status(401).json({
-                        status: "autorizacion denegada: token invalido"
-                    }) 
+        if (headerToken && headerToken.startsWith('Bearer ')) {//verificamos que el token comience con Bearer
+            
+            const bearerToken = headerToken.split(' ')[2].trim();//extrae el token eliminando el prefijo y cualquier espacio en blanco adicional.
+                  
+            jwt.verify(bearerToken, process.env.SECRET_KEY || 'evdaulren', (err) => {//verificamos el token con la clavecita
+                if (err) {
+                    if (err instanceof TokenExpiredError) {
+                        return res.status(401).json({ status: "autorizacion denegada: token expirado" });
+                    }
+                    if (err instanceof JsonWebTokenError) {
+                        return res.status(401).json({ status: "autorizacion denegada: token invalido" });
+                    }
                 }
-            }
-            next();
-            })
-    } else {
-        res.status(404).json({
-            status: 'Acceso denegado: Token no proporcionado'
-        });
-    }
-        
+                next();//si el token es valido pasa el controll al siguiente middleware
+            });
+        } else {
+            res.status(401).json({ status: 'Acceso denegado: Token no proporcionado' });
+        }
     } catch (error) {
-        console.error("Error durante la validación del token:", error);  
-        return res.status(401).json({ message: "Autorización fallida" });  
+        console.error("Error durante la validación del token:", error);
+        res.status(500).json({ message: "Error interno del servidor" });
     }
-}
+};
 
 export default validateToken;

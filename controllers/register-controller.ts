@@ -6,15 +6,13 @@ let register = async (req: Request, res: Response) => {
   try {
     const {
       email,
+      password,
       name,
       lastName,
-      password,
-      role,
-      phoneNumber,
-      address
+      phoneNumber
     } = req.body;
     
-    const registerUser = await UserService.register(new User(email, name, lastName, role, phoneNumber, password, address));   
+    const registerUser = await UserService.register(new User(email, password, name, lastName, phoneNumber));   
 
     return res.status(201).send(
       { status: 'register ok' }

@@ -1,9 +1,9 @@
 import express from "express";
 import bodyParser from 'body-parser';
-
 import register from './routes/register';
 import auth from './routes/auth';
 import products from './routes/products'
+import pedido from './routes/pedido'
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -14,6 +14,7 @@ app.use(express.urlencoded({extended: false}));
 app.use('/register', register);
 app.use('/auth', auth);
 app.use('/products', products);
+app.use('/pedido', pedido); 
 
 const PORT = process.env.PORT || 10101;
 
